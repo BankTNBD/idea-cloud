@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Idea Cloud</title>
+    <link rel="stylesheet" href="styles.css" />
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <h1>Idea Cloud</h1>
+        </header>
+
+        <div class="search-bar">
+            <input type="text" placeholder="Ask me for a creative idea..." id="ideaInput" />
+            <button id="generateIdeaButton">Generate Idea</button>
+        </div>
+
+        <div class="pre-card" style="display: none;" id="pre-card">
+            <div class="card">
+                <p class="card-header" id="pre-card-header">sds</p>
+                <p class="card-description" id="pre-card-description">Build a text-based adventure game with branching
+                    choices.</p>
+                <div class="tags" id="pre-card-tags">
+                </div>
+                <div style="width: 100%; display: flex; justify-content: end;">
+                    <div style="display: flex; gap: 16px;">
+                        <button
+                            style="cursor: pointer; border: none; border-radius: 8px; padding: 12px; color: white; background-color: red;"
+                            id="pre-card-delete-button">Delete</button>
+                        <button
+                            style="cursor: pointer; border: none; border-radius: 8px; padding: 12px; color: white; background-color: #2563eb;"
+                            id="pre-card-add-button">Add to Idea Cloud</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="menu-bar">
+            <div>
+                <h2>List</h2>
+            </div>
+            <!-- <div class="dropdown">
+                <div>
+                    <label for="sort-select">Sort by:</label>
+                    <select id="sort-select" name="sort">
+                        <option value="popular">Most Popular</option>
+                        <option value="date">Date</option>
+                    </select>
+                </div>
+            </div> -->
+        </div>
+
+        <div class="card-grid" id="grid">
+        </div>
+    </div>
+    <script type="module" src="scripts/script.js"></script>
+</body>
+
+</html>
