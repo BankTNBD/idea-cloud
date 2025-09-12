@@ -17,7 +17,7 @@ export async function getIdeas(req, res) {
             "messages": [
                 {
                     "role": "user",
-                    "content": `Please give me an idea from topic that i give you. Please respond with HTML-formatted text only, not Markdown.  Do not use triple backticks or markdown syntax.  Example: <h1>Title</h1><p>Description</p><ul><li>Item</li></ul>. topic: "${message}"`
+                    "content": `Please give me an idea from topic that i give you. Please respond with HTML-formatted text only without css or styling, not Markdown.  Do not use triple backticks or markdown syntax.  Example: <h1>Title</h1><p>Description</p><ul><li>Item</li></ul>. topic: "${message}"`
                 }
             ]
         })
@@ -40,7 +40,12 @@ export async function getIdeas(req, res) {
             ]
         })
     }).then((response) => response.json());
-    response.tags = tags.choices[0].message.content;
-
+    try {
+        JSON.parse(tags.choices[0].message.content);
+        response.tags = tags.choices[0].message.content;
+    } catch (e) {
+        response.tags = "[]";
+    }
+    
     res.status(200).json(response);
 }   

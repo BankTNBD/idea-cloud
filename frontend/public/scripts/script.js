@@ -53,6 +53,7 @@ generateBtn.addEventListener("click", async (e) => {
     preCard.style.display = "block";
     preCardHeader.innerHTML = idea;
     preCardDescription.innerHTML = "Generating...";
+    preCardTags.innerHTML = "";
     try {
         const llm = await askLLM({ message: idea });
         preCardDescription.innerHTML = llm.answer;
