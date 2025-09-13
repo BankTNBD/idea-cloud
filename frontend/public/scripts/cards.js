@@ -11,18 +11,26 @@ export async function initializeCards(sortBy = "", tag = "") {
         const card = document.createElement("div");
         card.className = "card";
         card.dataset.id = cardData._id;
+
+        // Header
         const cardHeader = document.createElement("p");
         cardHeader.className = "card-header";
         cardHeader.textContent = cardData.title;
         card.appendChild(cardHeader);
+
+        // Description
         const cardDescription = document.createElement("p");
         cardDescription.className = "card-description";
-        cardDescription.innerHTML = cardData.description;   
+        cardDescription.innerHTML = cardData.description;
         card.appendChild(cardDescription);
+
+        // Author
         const cardGenerator = document.createElement("p");
         cardGenerator.className = "card-generator";
         cardGenerator.innerHTML = `Author: ${cardData.generator}`;
         card.appendChild(cardGenerator);
+
+        // Tags
         const cardTags = document.createElement("div");
         cardTags.className = "tags";
         try {
@@ -36,10 +44,23 @@ export async function initializeCards(sortBy = "", tag = "") {
             // fallback if tags are not JSON
         }
         card.appendChild(cardTags);
-        const cardRating = document.createElement("div");
-        cardRating.className = "rating";
-        cardRating.innerHTML = `⭐️ <span>${cardData.rating}</span>`;
-        card.appendChild(cardRating);
+
+        // Likes/Dislikes
+        const cardLikes = document.createElement("div");
+        cardLikes.className = "likes";
+        cardLikes.innerHTML = `👍 <span>${cardData.likes || 0}</span>`;
+
+        const cardDislikes = document.createElement("div");
+        cardDislikes.className = "dislikes";
+        cardDislikes.innerHTML = `👎 <span>${cardData.dislikes || 0}</span>`;
+
+        const cardRatingContainer = document.createElement("div");
+        cardRatingContainer.className = "rating-container";
+        cardRatingContainer.appendChild(cardLikes);
+        cardRatingContainer.appendChild(cardDislikes);
+
+        card.appendChild(cardRatingContainer);
+
         // Prefer/Not Prefer buttons
         const cardActions = document.createElement("div");
         cardActions.className = "card-actions";
@@ -53,41 +74,51 @@ export async function initializeCards(sortBy = "", tag = "") {
         const shareBtn = document.createElement("button");
         shareBtn.className = "share-btn";
         shareBtn.textContent = "🔗 Copy";
+
+        const deleteBtn = document.createElement("button");
+        deleteBtn.className = "delete-btn";
+        deleteBtn.textContent = "🗑️ Delete";
+
         cardActions.appendChild(preferBtn);
         cardActions.appendChild(notPreferBtn);
         cardActions.appendChild(shareBtn);
+        cardActions.appendChild(deleteBtn);
         card.appendChild(cardActions);
+
+        // Like button handler (increment style)
         preferBtn.addEventListener("click", async (e) => {
             e.stopPropagation();
-            const newRating = cardData.rating + 1;
             try {
-                await updateRating(card.dataset.id, newRating);
-                cardData.rating = newRating;
-                cardRating.innerHTML = `⭐️ <span>${cardData.rating}</span>`;
+                const updated = await updateRating(card.dataset.id, { likes: 1 }); // increment
+                cardLikes.innerHTML = `👍 <span>${updated.likes}</span>`;
             } catch (err) {
-                alert("Failed to update rating");
+                alert("Failed to update likes", err);
             }
         });
+
+        // Dislike button handler (increment style)
         notPreferBtn.addEventListener("click", async (e) => {
             e.stopPropagation();
-            const newRating = cardData.rating - 1;
-            if (newRating < 0) {
+            try {
+                const updated = await updateRating(card.dataset.id, { dislikes: 1 }); // increment
+                cardDislikes.innerHTML = `👎 <span>${updated.dislikes}</span>`;
+            } catch (err) {
+                alert("Failed to update dislikes", err);
+            }
+        });
+
+        deleteBtn.addEventListener("click", async (e) => {
+            e.stopPropagation();
+            if (confirm("Are you sure you want to delete this post?")) {
                 try {
                     await deletePost(card.dataset.id);
                     card.remove();
                 } catch (err) {
                     alert("Failed to delete post");
                 }
-            } else {
-                try {
-                    await updateRating(card.dataset.id, newRating);
-                    cardData.rating = newRating;
-                    cardRating.innerHTML = `⭐️ <span>${cardData.rating}</span>`;
-                } catch (err) {
-                    alert("Failed to update rating");
-                }
             }
         });
+
         // Ask AI section
         const aiSection = document.createElement("div");
         aiSection.className = "ai-section";
@@ -104,6 +135,7 @@ export async function initializeCards(sortBy = "", tag = "") {
         aiSection.appendChild(aiBtn);
         aiSection.appendChild(aiAnswer);
         card.appendChild(aiSection);
+
         aiBtn.addEventListener("click", async () => {
             aiBtn.disabled = true;
             aiAnswer.textContent = "Thinking...";
@@ -118,8 +150,9 @@ export async function initializeCards(sortBy = "", tag = "") {
                 aiBtn.disabled = false;
             }
         });
+
+        // Share button handler
         shareBtn.addEventListener("click", async () => {
-            // Get plain text for title and description
             const titleText = cardHeader.textContent;
             const descText = cardDescription.textContent;
             let tagsText = "";
@@ -137,6 +170,7 @@ export async function initializeCards(sortBy = "", tag = "") {
                 alert("Failed to copy to clipboard");
             }
         });
+
         cardGrid.appendChild(card);
     });
 }
@@ -148,6 +182,7 @@ if (sortSelect) {
         await initializeCards(e.target.value);
     });
 }
+
 // Handle tag search
 const tagSearchBtn = document.getElementById("tagSearchButton");
 const tagSearchInput = document.getElementById("tagSearchInput");

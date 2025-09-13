@@ -26,13 +26,14 @@ export async function updatePost() {
 }
 
 export async function updateRating(id, rating) {
-    await fetch(`${BACKEND_URL}/posts/${id}/rating`, {
+    const response = await fetch(`${BACKEND_URL}/posts/${id}/rating`, {
         method: "PUT",
         headers: {
             "Content-Type": "application/json",
         },
-        body: JSON.stringify({ rating: rating }),
-    });
+        body: JSON.stringify(rating),
+    }).then((res) => res.json());
+    return response;
 }
 
 export async function deletePost(id) {

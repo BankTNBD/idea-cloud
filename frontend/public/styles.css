@@ -80,7 +80,7 @@ header h1 {
 
 .card-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
   gap: 16px;
 }
 
@@ -153,7 +153,8 @@ header h1 {
 .prefer-btn,
 .not-prefer-btn,
 .share-btn,
-.ai-btn {
+.ai-btn,
+.delete-btn {
   border-radius: 6px;
   border: none;
   padding: 8px 14px;
@@ -180,6 +181,15 @@ header h1 {
 .not-prefer-btn:hover {
   background-color: #b91c1c;
 }
+
+.delete-btn {
+  background-color: #6b7280; /* gray */
+}
+
+.delete-btn:hover {
+  background-color: #374151; /* darker gray */
+}
+
 
 .share-btn {
   background-color: #f59e42;
