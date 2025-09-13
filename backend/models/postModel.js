@@ -15,11 +15,17 @@ const postSchema = new mongoose.Schema({
   },
   rating: {
     type: Number,
-    default: 1,
+    required: true,
   },
   created_at: {
     type: Date,
+    required: true,
     default: Date.now,
+  },
+  generator: {
+    type: String,
+    required: false,
+    default: "Anonymous",
   },
 });
 

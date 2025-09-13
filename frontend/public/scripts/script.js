@@ -31,8 +31,6 @@ const sampleCards = [
 ]
 
 
-initializeCards();
-
 // Generate idea
 const generateBtn = document.getElementById("generateIdeaButton");
 const ideaInput = document.getElementById("ideaInput");
@@ -70,6 +68,7 @@ generateBtn.addEventListener("click", async (e) => {
             description: llm.answer,
             tags: llm.tags,
             rating: 0,
+            generator: localStorage.getItem("profileName")
         }
     } catch (err) {
         preCardDescription.innerHTML = "Error generating idea. Please try again.";
@@ -89,4 +88,28 @@ preCardAddButton.addEventListener("click", async (e) => {
     preCard.style.display = "none";
     await initializeCards();
 })
+
+window.addEventListener("DOMContentLoaded", () => {
+    initializeCards();
+    const sortSelect = document.getElementById("sort-select");
+    if (sortSelect) {
+        sortSelect.addEventListener("change", (e) => {
+            initializeCards(e.target.value);
+        });
+    }
+});
+
+// Profile system: save/load name to localStorage
+const profileNameInput = document.getElementById("profileNameInput");
+if (profileNameInput) {
+    // Load name from localStorage on page load
+    const savedName = localStorage.getItem("profileName");
+    if (savedName) {
+        profileNameInput.value = savedName;
+    }
+    // Save name to localStorage on change
+    profileNameInput.addEventListener("input", (e) => {
+        localStorage.setItem("profileName", e.target.value);
+    });
+}
 

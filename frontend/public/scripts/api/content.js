@@ -10,8 +10,14 @@ export async function createPost(post) {
     });
 }
 
-export async function readPost(id) {
-    const posts = await fetch(`${BACKEND_URL}/posts/${id || ""}`).then(res => res.json());
+export async function readPost(id, sortBy = "", tag = "") {
+    let url = `${BACKEND_URL}/posts`;
+    if (id) url += `/${id}`;
+    const params = [];
+    if (sortBy) params.push(`sort=${sortBy}`);
+    if (tag) params.push(`tag=${encodeURIComponent(tag)}`);
+    if (params.length > 0) url += `?${params.join("&")}`;
+    const posts = await fetch(url).then(res => res.json());
     return posts;
 }
 

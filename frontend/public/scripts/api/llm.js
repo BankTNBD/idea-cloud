@@ -11,3 +11,14 @@ export async function askLLM(content) {
 
     return response;
 }
+
+export async function askLLMMore(content) {
+    const response = await fetch(`${BACKEND_URL}/llm/more`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(content)
+    }).then((response) => response.json());
+    return response;
+}
