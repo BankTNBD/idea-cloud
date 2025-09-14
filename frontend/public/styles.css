@@ -80,8 +80,8 @@ header h1 {
 
 .card-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
-  gap: 16px;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  gap: 12px;
 }
 
 .card {
@@ -146,7 +146,7 @@ header h1 {
 .card-actions {
   display: flex;
   justify-content: space-between;
-  gap: 8px;
+  gap: 4px;
   margin-top: 16px;
 }
 

@@ -68,7 +68,7 @@ generateBtn.addEventListener("click", async (e) => {
             description: llm.answer,
             tags: llm.tags,
             rating: 0,
-            generator: localStorage.getItem("profileName") ?? "Anonymous"
+            generator: localStorage.getItem("profileName") ? localStorage.getItem("profileName") : "Anonymous"
         }
     } catch (err) {
         preCardDescription.innerHTML = "Error generating idea. Please try again.";
